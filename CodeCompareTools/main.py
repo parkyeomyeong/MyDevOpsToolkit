@@ -21,12 +21,12 @@ EXCLUDE_FILES = [".factorypath",
                  "MemberServiceImpl.java"
                  ]
 
-# 디렉토리 경로 설정
-dev_directory = r'C:\sts\workspace_new\derp_dev'
-prod_directory = r'C:\sts\workspace_new\derp'
+# 디렉토리 경로 설정(절대경로)
+dev_directory = r'<Your Dev Project Path>'
+prod_directory = r'<Your Was Project Path>'
 
 # VS Code 실행 파일의 절대 경로
-vscode_path = r"C:\Users\AD2306051P01\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+vscode_path = r"C:\Users\<UserName>\AppData\Local\Programs\Microsoft VS Code\Code.exe"
 
 def compare_directories(dir1, dir2, dif_files, dif_files_dir, count_in_progress, total_count):
     dcmp = filecmp.dircmp(dir1, dir2)
