@@ -4,22 +4,7 @@ import re
 import subprocess
 
 # 검사 제외할 파일
-EXCLUDE_FILES = [".factorypath", 
-                 ".svn",
-                 "wc.db", 
-                 "pom.xml", 
-                 ".classpath",
-                 "org.eclipse.wst.common.component",
-                 "DerpApplication.java", 
-                 "application-dev.properties", 
-                 "application.properties", 
-                 "logback.xml", 
-                 "dextuploadx5-configuration.js", 
-                 "dextuploadnj.config",
-                 "DEXTUploadNJExtensionConfiguration.java",
-                 "MemberUtil.java",
-                 "MemberServiceImpl.java"
-                 ]
+EXCLUDE_FILES = []
 
 # 디렉토리 경로 설정(절대경로)
 dev_directory = r'<Your Dev Project Path>'
