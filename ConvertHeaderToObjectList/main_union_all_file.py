@@ -7,7 +7,7 @@ html = '''
         <tr class="w3-theme-l1">
             <th style="text-align:center;font-weight:normal" colspan="11">의뢰기본정보</th>
             <th style="text-align:center;font-weight:normal" colspan="7">담당자정보</th>
-            <th style="text-align:center;font-weight:normal" colspan="4" rowspan="2">종합 리드타임 정보</th>
+            <th style="text-align:center;font-weight:normal" colspan="5" rowspan="2">종합 리드타임 정보</th>
             <th style="text-align:center;font-weight:normal" colspan="84">구간별 상세 리드타임 정보</th>
         </tr>
         <tr class="w3-theme-l1">
@@ -52,9 +52,9 @@ html = '''
             <th style="text-align:center;font-weight:normal" rowspan="2">의뢰일</th>
             <th style="text-align:center;font-weight:normal" rowspan="2">완료요청일</th>
             <th style="text-align:center;font-weight:normal" rowspan="2">컨펌요청일</th>
+            <th style="text-align:center;font-weight:normal" rowspan="2">캔슬일</th>
             <th style="text-align:center;font-weight:normal" rowspan="2">경과일수</th>
             <!-- 카피작업구간-->
-            <!-- <th style="text-align:center;font-weight:normal" colspan="3">진행단계</th> -->
             <th style="text-align:center;font-weight:normal" colspan="3">완료단계</th>
             <!-- 최종컨펌구간 -->
             <th style="text-align:center;font-weight:normal" colspan="2">전체</th>
@@ -90,9 +90,6 @@ html = '''
             <th style="text-align:center;font-weight:normal" >확인일</th>
             <th style="text-align:center;font-weight:normal" >확인부서</th>
             <th style="text-align:center;font-weight:normal" >확인자</th>
-            <!-- <th style="text-align:center;font-weight:normal" >LT</th>
-            <th style="text-align:center;font-weight:normal" >카피진행일</th>
-            <th style="text-align:center;font-weight:normal" >진행자</th> -->
             <th style="text-align:center;font-weight:normal" >LT</th>
             <th style="text-align:center;font-weight:normal" >카피완료일</th>
             <th style="text-align:center;font-weight:normal" >완료자</th>
@@ -131,7 +128,7 @@ html = '''
             <th style="text-align:center;font-weight:normal" >컨펌일</th>
             <th style="text-align:center;font-weight:normal" >컨펌자</th>
             <th style="text-align:center;font-weight:normal" >LT</th>
-            <th style="text-align:center;font-weight:normal" >컨펌일</th><!-- 카피팀장 추가 -->
+            <th style="text-align:center;font-weight:normal" >컨펌일</th>
             <th style="text-align:center;font-weight:normal" >컨펌자</th>
             <th style="text-align:center;font-weight:normal" >LT</th>
             <th style="text-align:center;font-weight:normal" >컨펌일</th>
@@ -230,7 +227,28 @@ def parse_html_table(html):
 
     return header_data
 
-header_data = parse_html_table(html)
+def convert_to_java_format(header_data):
+    # Java의 Object[][] 형식으로 변환
+    java_array = "Object[][] headerData = {\n"
+    
+    previous_end_row = -1  # 이전 행의 마지막 인덱스를 저장
 
-for data in header_data:
-    print(data)
+    for row_index, entry in enumerate(header_data):
+        # 새로운 행 시작할 때 주석 추가
+        if entry[1] > previous_end_row:
+            java_array += f"\n    // {entry[1] + 1} 번째 행 **********************\n"
+
+        # 각 entry를 자바 배열 형태로 변환
+        java_row = f'    {{"{entry[0]}", {entry[1]}, {entry[2]}, {entry[3]}, {entry[4]}}},'
+        java_array += f"\n{java_row}"
+        
+        previous_end_row = entry[2]  # 현재 행의 마지막 인덱스를 업데이트
+
+    java_array += "\n};"
+    
+    return java_array
+
+header_data = parse_html_table(html)
+convert_data = convert_to_java_format(header_data)
+
+print(convert_data)
